@@ -13,10 +13,22 @@ import (
 	pusher "github.com/pusher/pusher-http-go"
 )
 
+type User struct {
+	Email    string
+	Password string
+}
+
 var (
-	validUsers = map[string]string{
-		"admin": "admin",
-		"lanre": "guestwriter",
+	validUsers = map[string]User{
+		"admin": User{
+			Email:    "yo@lanre.wtf",
+			Password: "admin",
+		},
+		"lanre": User{
+
+			Email:    "yo@lanre.wtf",
+			Password: "lanre",
+		},
 	}
 )
 
@@ -86,14 +98,14 @@ func login(client *pusher.Client) http.HandlerFunc {
 			return
 		}
 
-		password, ok := validUsers[request.UserName]
+		user, ok := validUsers[request.UserName]
 		if !ok {
 			w.WriteHeader(http.StatusBadRequest)
 			encode(w, response{"User not found", false})
 			return
 		}
 
-		if password != request.Password {
+		if user.Password != request.Password {
 			w.WriteHeader(http.StatusBadRequest)
 			encode(w, response{"Password does not match", false})
 			return
@@ -109,11 +121,13 @@ func login(client *pusher.Client) http.HandlerFunc {
 		}
 
 		client.Trigger("auth", "login", &struct {
-			IP   string
-			User string
+			IP    string `json:"ip"`
+			User  string `json:"user"`
+			Email string `json:"email"`
 		}{
-			User: request.UserName,
-			IP:   r.RemoteAddr,
+			User:  request.UserName,
+			IP:    r.RemoteAddr,
+			Email: user.Email,
 		})
 	}
 }
