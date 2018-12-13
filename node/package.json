@@ -1,0 +1,9 @@
+{
+  "dependencies": {
+    "dotenv": "^6.2.0",
+    "fs": "^0.0.1-security",
+    "handlebars": "^4.0.12",
+    "nodemailer": "^4.7.0",
+    "pusher-js": "^4.3.1"
+  }
+}

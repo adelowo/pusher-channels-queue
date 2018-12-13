@@ -26,7 +26,7 @@ var (
 		},
 		"lanre": User{
 
-			Email:    "yo@lanre.wtf",
+			Email:    "adelowomailbox@gmail.com",
 			Password: "lanre",
 		},
 	}
@@ -114,10 +114,16 @@ func login(client *pusher.Client) http.HandlerFunc {
 		w.WriteHeader(http.StatusOK)
 		encode(w, response{"Login successful", true})
 
-		_, _, err := net.SplitHostPort(r.RemoteAddr)
+		host, _, err := net.SplitHostPort(r.RemoteAddr)
 		if err != nil {
 			fmt.Fprintf(w, "userip: %q is not IP:port", r.RemoteAddr)
 			return
+		}
+
+		var ip = host
+
+		if host == "::1" {
+			ip = "127.0.0.1"
 		}
 
 		client.Trigger("auth", "login", &struct {
@@ -126,7 +132,7 @@ func login(client *pusher.Client) http.HandlerFunc {
 			Email string `json:"email"`
 		}{
 			User:  request.UserName,
-			IP:    r.RemoteAddr,
+			IP:    ip,
 			Email: user.Email,
 		})
 	}
