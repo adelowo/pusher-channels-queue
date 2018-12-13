@@ -10,6 +10,7 @@ import (
 	"net/http"
 	"os"
 
+	"github.com/joho/godotenv"
 	pusher "github.com/pusher/pusher-http-go"
 )
 
@@ -37,6 +38,11 @@ func main() {
 	port := flag.Int("http.port", 1400, "Port to run HTTP service on")
 
 	flag.Parse()
+
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal("Error loading .env file")
+	}
 
 	appID := os.Getenv("PUSHER_APP_ID")
 	appKey := os.Getenv("PUSHER_APP_KEY")
