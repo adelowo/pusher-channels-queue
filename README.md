@@ -1,6 +1,6 @@
 # pusher-channels-queue
 
-Building a messaging queue between applications using Pusher Channels. 
+Building a messaging queue between applications using Pusher Channels. The tutorial is located at https://pusher.com/tutorials/messaging-queue-node-go
 
 #### Prerequisites
 
